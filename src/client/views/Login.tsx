@@ -33,6 +33,10 @@ const LoginRegister = () => {
                 setAlert({ text: data.message, variant: "success" });
                 setTimeout(handleDismissToast, 5000);
             }
+
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
         } catch (error) {
             console.error("Networking error:", error);
         }

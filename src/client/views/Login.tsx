@@ -51,10 +51,10 @@ const LoginRegister = () => {
                 </Typography>
             </Grid>
             <Grid item xs={12} md={7}>
-                <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} label="Email" variant="outlined" />
+                <TextField type="email" fullWidth value={email} onChange={e => setEmail(e.target.value)} label="Email" variant="outlined" />
             </Grid>
             <Grid item xs={12} md={7}>
-                <TextField fullWidth value={password} onChange={e => setPassword(e.target.value)} label="Password" variant="outlined" />
+                <TextField type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} label="Password" variant="outlined" />
             </Grid>
             {alert?.variant && (
                 <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", marginY: "10px" }}>

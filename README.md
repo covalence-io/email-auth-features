@@ -7,3 +7,4 @@ Be sure to [subscribe to our Youtube channel](https://www.youtube.com/channel/UC
 Branches:
 
 -   `base` is the core server and client setup, in the event you'd like to follow along with implementing the features yourself!
+-   `verification` extends the core server and has the logic to send emails to verify user accounts upon registration and to block login attempts until the user account is verified

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
 import Navbar from "./components/Navbar";
 import LoginRegister from "./views/Login";
+import Verify from "./views/Verify";
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginRegister />} />
+                    <Route path="/verify" element={<Verify />} />
                 </Routes>
             </Container>
         </BrowserRouter>

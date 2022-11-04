@@ -1,6 +1,10 @@
 import * as express from "express";
 import * as bcrypt from "bcrypt";
 import Users from "../../database/queries/users";
+import { mail } from "../../utilities/mailer";
+import config from "../../config";
+import { getTempToken } from "../../utilities/tokens";
+import { sendRegistrationEmail } from "../../services/registrationEmail";
 
 const router = express.Router();
 
@@ -13,7 +17,9 @@ router.post("/", async (req, res) => {
         const hashed = await bcrypt.hash(password, 12);
         const { insertId } = await Users.register(email, hashed);
 
-        res.status(201).json({ message: "User was successfully registered", id: insertId });
+        await sendRegistrationEmail(email);
+
+        res.status(201).json({ message: "User was successfully registered, check email to verify account", id: insertId });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "An unknown error occurred" });

@@ -1,15 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import config from "../config";
-
-interface LoginPayload {
-    id: number;
-    email: string;
-    role: "user";
-}
-
-interface TempPayload {
-    email: string;
-}
+import { LoginPayload, TempPayload } from "../../types";
 
 const sign = (data: LoginPayload | TempPayload, time: string) => {
     return jwt.sign(data, config.jwt.secret, { expiresIn: time });
@@ -18,6 +9,6 @@ const sign = (data: LoginPayload | TempPayload, time: string) => {
 export const getLoginToken = (payload: LoginPayload) => sign(payload, "30d");
 export const getTempToken = (payload: TempPayload) => sign(payload, "15m");
 
-export const verify = (data: string) => {
-    return jwt.verify(data, config.jwt.secret);
+export const verify = (token: string) => {
+    return jwt.verify(token, config.jwt.secret);
 };

@@ -1,10 +1,7 @@
 import * as express from "express";
 import * as bcrypt from "bcrypt";
 import Users from "../../database/queries/users";
-import { mail } from "../../utilities/mailer";
-import config from "../../config";
-import { getTempToken } from "../../utilities/tokens";
-import { sendRegistrationEmail } from "../../services/registrationEmail";
+import { sendRegistrationEmail } from "../../services/authEmails";
 
 const router = express.Router();
 

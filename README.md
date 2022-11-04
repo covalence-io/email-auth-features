@@ -8,3 +8,12 @@ Branches:
 
 -   `base` is the core server and client setup, in the event you'd like to follow along with implementing the features yourself!
 -   `verification` extends the core server and has the logic to send emails to verify user accounts upon registration and to block login attempts until the user account is verified
+-   `magic_link` extends upon the verification logic (as will all other downstream features) and has the ability to send & validate a temporary token via email, then return a fully fledged login token to the user
+
+Feature Roadmap:
+
+-   ~~Add verification logic~~
+-   ~~Prevent login until user is verified~~
+-   ~~Magic links to auto-login a user~~
+-   Password reset functionality
+-   MFA with random codes

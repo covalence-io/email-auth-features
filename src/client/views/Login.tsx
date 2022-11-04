@@ -1,14 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { Typography, Grid, TextField, Switch, Button, Alert, Snackbar, AlertColor } from "@mui/material";
+import { Typography, Grid, TextField, Switch, Button, Alert, AlertColor } from "@mui/material";
 
 const LoginRegister = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("andrew@covalence.io");
+    const [password, setPassword] = useState("hunter2");
     const [isLogin, setIsLogin] = useState(true);
-    const [alert, setAlert] = useState({ text: "", variant: "" });
 
-    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogin = async () => {
         const verb = isLogin ? "login" : "register";
         const URL = `/auth/${verb}`;
 
@@ -39,6 +38,19 @@ const LoginRegister = () => {
             }
         } catch (error) {
             console.error("Networking error:", error);
+        }
+    };
+
+    const handleSendMagicLink = async () => {
+        try {
+            const res = await fetch(`/auth/magic/generate?email=${email}`);
+            const data = await res.json();
+
+            window.alert(data.message);
+
+            if (!res.ok) console.error(data);
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -73,6 +85,12 @@ const LoginRegister = () => {
                 <Button onClick={handleLogin} size="large" variant="contained" color="secondary">
                     {isLogin ? "Login" : "Register"}
                 </Button>
+
+                {isLogin && email && !password && (
+                    <Button onClick={handleSendMagicLink} size="large" variant="contained" color="primary">
+                        Send magic link
+                    </Button>
+                )}
             </Grid>
         </Grid>
     );

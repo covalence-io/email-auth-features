@@ -15,6 +15,7 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginRegister />} />
                     <Route path="/verify" element={<Verify />} />
+                    <Route path="/magic_link" element={<Verify />} />
                 </Routes>
             </Container>
         </BrowserRouter>

@@ -15,6 +15,8 @@ const Verify = () => {
                 alert(data.message);
 
                 if (res.ok) {
+                    if (data.token) localStorage.setItem("token", data.token);
+
                     nav("/");
                 } else {
                     console.error(data);

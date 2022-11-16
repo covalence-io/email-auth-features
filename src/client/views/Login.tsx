@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
 import { Typography, Grid, TextField, Switch, Button, Alert, AlertColor } from "@mui/material";
+import { IAlert } from "../../types";
 
 const LoginRegister = () => {
     const [email, setEmail] = useState("andrew@covalence.io");
-    const [password, setPassword] = useState("hunter2");
+    const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const [alert, setAlert] = useState<IAlert>({ text: "", variant: "" });
 
     const handleLogin = async () => {
         const verb = isLogin ? "login" : "register";
@@ -41,12 +43,12 @@ const LoginRegister = () => {
         }
     };
 
-    const handleSendMagicLink = async () => {
+    const handleSendLink = async (path: string) => {
         try {
-            const res = await fetch(`/auth/magic/generate?email=${email}`);
+            const res = await fetch(`/auth/${path}?email=${email}`);
             const data = await res.json();
 
-            window.alert(data.message);
+            setAlert({ text: data.message!, variant: res.ok ? "success" : "error" });
 
             if (!res.ok) console.error(data);
         } catch (error) {
@@ -82,13 +84,19 @@ const LoginRegister = () => {
                 </Grid>
             )}
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", marginY: "10px" }}>
-                <Button onClick={handleLogin} size="large" variant="contained" color="secondary">
+                <Button sx={{ marginX: "4px" }} onClick={handleLogin} size="large" variant="contained" color="secondary">
                     {isLogin ? "Login" : "Register"}
                 </Button>
 
                 {isLogin && email && !password && (
-                    <Button onClick={handleSendMagicLink} size="large" variant="contained" color="primary">
+                    <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("magic/generate")} size="large" variant="contained" color="primary">
                         Send magic link
+                    </Button>
+                )}
+
+                {isLogin && email && !password && (
+                    <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("reset")} size="large" variant="contained" color="primary">
+                        Send password reset link
                     </Button>
                 )}
             </Grid>

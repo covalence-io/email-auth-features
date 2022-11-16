@@ -7,20 +7,27 @@ const LoginRegister = () => {
     const [email, setEmail] = useState("andrew@covalence.io");
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const [isMFA, setIsMFA] = useState(false);
+    const [mfaCode, setMFACode] = useState("");
     const [alert, setAlert] = useState<IAlert>({ text: "", variant: "" });
 
     const handleLogin = async () => {
         const verb = isLogin ? "login" : "register";
         const URL = `/auth/${verb}`;
 
+        const body: { [key: string]: string } = { email, password };
+
+        if (mfaCode) body["code"] = mfaCode;
+
         try {
             const res = await fetch(URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify(body)
             });
 
             const data = await res.json();
+            setIsMFA(!!data.needsMFA);
 
             if (!res.ok) {
                 setAlert({ text: data.message || `Could not ${verb}`, variant: "error" });
@@ -74,6 +81,11 @@ const LoginRegister = () => {
             <Grid item xs={12} md={7}>
                 <TextField type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} label="Password" variant="outlined" />
             </Grid>
+            {isMFA && (
+                <Grid item xs={12} md={7}>
+                    <TextField type="text" fullWidth value={mfaCode} onChange={e => setMFACode(e.target.value)} label="MFA code" variant="outlined" />
+                </Grid>
+            )}
             {alert?.variant && (
                 <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", marginY: "10px" }}>
                     <Grid item xs={12} md={4}>
@@ -89,15 +101,14 @@ const LoginRegister = () => {
                 </Button>
 
                 {isLogin && email && !password && (
-                    <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("magic/generate")} size="large" variant="contained" color="primary">
-                        Send magic link
-                    </Button>
-                )}
-
-                {isLogin && email && !password && (
-                    <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("reset")} size="large" variant="contained" color="primary">
-                        Send password reset link
-                    </Button>
+                    <>
+                        <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("magic/generate")} size="large" variant="contained" color="primary">
+                            Send magic link
+                        </Button>
+                        <Button sx={{ marginX: "4px" }} onClick={() => handleSendLink("reset")} size="large" variant="contained" color="primary">
+                            Send password reset link
+                        </Button>
+                    </>
                 )}
             </Grid>
         </Grid>

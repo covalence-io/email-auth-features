@@ -1,6 +1,7 @@
 import { getTempToken } from "../utilities/tokens";
 import { mail } from "../utilities/mailer";
 import config from "../config";
+import { Code } from "../../types";
 
 export const sendRegistrationEmail = (email: string) => {
     const token = getTempToken({ email });
@@ -18,4 +19,9 @@ export const sendResetLink = (email: string) => {
     const token = getTempToken({ email });
     const html = `<p>Here is your<a href="${config.domain.url}/reset?token=${token}&email=${email}&type=reset">password reset link</a> to log in!</p>`;
     return mail({ to: email, from: "<Password Reset> auth@atlc.dev", subject: "Password Reset Link", html });
+};
+
+export const sendMFALink = (code: Code) => {
+    const html = `<p>Your 6 digit code is here: ${code.code}. We will never ask you to give this to us. Never share this with anyone</p>`;
+    return mail({ to: code.email, from: "<MFA Code> auth@atlc.dev", subject: "MFA Login Code.", html });
 };

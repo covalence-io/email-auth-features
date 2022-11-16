@@ -3,6 +3,14 @@ export interface User {
     email: string;
     password: string;
     isVerified: 0 | 1;
+    mfaIsEnabled: 0 | 1;
+}
+
+export interface Code {
+    code: number;
+    email: User["email"];
+    created_at: number;
+    expires_at: number;
 }
 
 export interface LoginPayload {

@@ -10,6 +10,7 @@ Branches:
 -   `verification` extends the core server and has the logic to send emails to verify user accounts upon registration and to block login attempts until the user account is verified
 -   `magic_link` extends upon the verification logic (as will all other downstream features) and has the ability to send & validate a temporary token via email, then return a fully fledged login token to the user
 -   `reset` extends upon the magic link login branch and logic, since we will want to issue a temporary token via email that we then use to validate the reset attempt
+-   `mfa` (extended upon all branches) this requires a new table to be added to your DB with a couple extra queries and with the users table modified
 
 Feature Roadmap:
 

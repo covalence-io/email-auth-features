@@ -5,6 +5,7 @@ import Home from "./views/Home";
 import Navbar from "./components/Navbar";
 import LoginRegister from "./views/Login";
 import Verify from "./views/Verify";
+import ResetPassword from "./views/ResetPassword";
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                     <Route path="/login" element={<LoginRegister />} />
                     <Route path="/verify" element={<Verify />} />
                     <Route path="/magic_link" element={<Verify />} />
+                    <Route path="/reset" element={<ResetPassword />} />
                 </Routes>
             </Container>
         </BrowserRouter>

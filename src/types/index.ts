@@ -14,3 +14,8 @@ export interface LoginPayload {
 export interface TempPayload {
     email: string;
 }
+
+export interface IAlert {
+    text: string;
+    variant: "success" | "error" | "";
+}

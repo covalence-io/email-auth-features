@@ -11,11 +11,12 @@ Branches:
 -   `magic_link` extends upon the verification logic (as will all other downstream features) and has the ability to send & validate a temporary token via email, then return a fully fledged login token to the user
 -   `reset` extends upon the magic link login branch and logic, since we will want to issue a temporary token via email that we then use to validate the reset attempt
 -   `mfa` (extended upon all branches) this requires a new table to be added to your DB with a couple extra queries and with the users table modified
+-   **BONUS!** `SMS-mfa` this uses a ton of the logic from the `mfa` branch, but we'll send the codes via SMS instead of emailing
 
 Feature Roadmap:
 
 -   ~~Add verification logic~~
 -   ~~Prevent login until user is verified~~
 -   ~~Magic links to auto-login a user~~
--   Password reset functionality
--   MFA with random codes
+-   ~~Password reset functionality~~
+-   ~~MFA with random codes~~

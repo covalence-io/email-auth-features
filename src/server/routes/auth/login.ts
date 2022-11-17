@@ -5,6 +5,7 @@ import Codes from "../../database/queries/codes";
 import { sendMFALink, sendRegistrationEmail } from "../../services/authEmails";
 import { getLoginToken } from "../../utilities/tokens";
 import { generateCode, validate } from "../../utilities/code";
+import { sendMessage } from "../../services/sms";
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
             await sendRegistrationEmail(email);
             res.status(403).json({ message: "Please check your email and verify your account" });
         } else {
-            if (!user.mfaIsEnabled) {
+            if (!user.mfaIsEnabled && !user.prefersSMS) {
                 const token = getLoginToken({ id: user.id!, email, role: "user" });
                 res.json({ message: "Successfully logged in", token });
             } else {
@@ -36,17 +37,29 @@ router.post("/", async (req, res) => {
                         res.json({ message: "Successfully logged in", token });
                     } else {
                         const newCode = await generateCode(user.email);
-                        await sendMFALink(newCode);
+
+                        if (user.prefersSMS) {
+                            await sendMessage({ body: `Your code is ${newCode.code}. We will never call you to ask for this. This code will expire in 15 minutes.`, to: user.phone });
+                        } else {
+                            await sendMFALink(newCode);
+                        }
+
                         await Codes.destroy(user.email);
                         await Codes.create(newCode);
-                        res.status(401).json({ message: "Incorrect code, please check your email for the 6 digit code", needsMFA: true });
+                        res.status(401).json({ message: `Incorrect code, please check your ${user.prefersSMS ? "phone" : "email"} for the newest 6 digit code`, needsMFA: true });
                     }
                 } else {
                     const newCode = await generateCode(user.email);
-                    await sendMFALink(newCode);
+
+                    if (user.prefersSMS) {
+                        await sendMessage({ body: `Your code is ${newCode.code}. We will never call you to ask for this. This code will expire in 15 minutes.`, to: user.phone });
+                    } else {
+                        await sendMFALink(newCode);
+                    }
+
                     await Codes.destroy(user.email);
                     await Codes.create(newCode);
-                    res.json({ message: "Please check your email for the 6 digit code", needsMFA: true });
+                    res.json({ message: `Please check your ${user.prefersSMS ? "phone" : "email"} for the 6 digit code`, needsMFA: true });
                 }
             }
         }

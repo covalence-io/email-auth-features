@@ -45,9 +45,23 @@ const domain = {
     url: DOMAIN_URL
 };
 
+const { TWILIO_NUM, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, GVOICE_NUMBER } = process.env;
+
+if (!TWILIO_NUM || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !GVOICE_NUMBER) {
+    throw new Error("Some required environment variables are undefined [Twilio config]");
+}
+
+const twilio = {
+    twilio_number: TWILIO_NUM,
+    account_SID: TWILIO_ACCOUNT_SID,
+    auth_token: TWILIO_AUTH_TOKEN,
+    google_voice_number: GVOICE_NUMBER
+};
+
 export default {
     mysql,
     jwt,
     mailgun,
-    domain
+    domain,
+    twilio
 };

@@ -4,6 +4,8 @@ export interface User {
     password: string;
     isVerified: 0 | 1;
     mfaIsEnabled: 0 | 1;
+    prefersSMS: 0 | 1;
+    phone: string; // +12051231234
 }
 
 export interface Code {
